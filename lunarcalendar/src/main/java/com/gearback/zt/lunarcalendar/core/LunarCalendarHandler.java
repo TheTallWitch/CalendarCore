@@ -68,6 +68,12 @@ public class LunarCalendarHandler {
 
     private boolean mHighlightLocalEvents = true;
     private boolean mHighlightOfficialEvents = true;
+    private boolean mHighlightAfghanistanEvents = true;
+    private boolean mHighlightIranEvents = true;
+    private boolean mHighlightAncientEvents = true;
+    private boolean mHighlightIslamicEvents = true;
+    private boolean mHighlightGregorianEvents = true;
+    private boolean mHighlightAdEvents = true;
 
     private List<CalendarEvent> mOfficialEvents;
     private List<CalendarEvent> mLocalEvents;
@@ -197,8 +203,62 @@ public class LunarCalendarHandler {
         return mHighlightLocalEvents;
     }
 
+    public boolean isHighlightAfghanistanEvents() {
+        return mHighlightAfghanistanEvents;
+    }
+
+    public boolean isHighlightIranEvents() {
+        return mHighlightIranEvents;
+    }
+
+    public boolean isHighlightAncientEvents() {
+        return mHighlightAncientEvents;
+    }
+
+    public boolean isHighlightIslamicEvents() {
+        return mHighlightIslamicEvents;
+    }
+
+    public boolean isHighlightGregorianEvents() {
+        return mHighlightGregorianEvents;
+    }
+
+    public boolean isHighlightAdEvents() {
+        return mHighlightAdEvents;
+    }
+
     public LunarCalendarHandler setHighlightLocalEvents(boolean highlightLocalEvents) {
         mHighlightLocalEvents = highlightLocalEvents;
+        return this;
+    }
+
+    public LunarCalendarHandler setHighlightAfghanistanEvents(boolean highlightAfghanistanEvents) {
+        mHighlightAfghanistanEvents = highlightAfghanistanEvents;
+        return this;
+    }
+
+    public LunarCalendarHandler setHighlightIranEvents(boolean highlightIranEvents) {
+        mHighlightIranEvents = highlightIranEvents;
+        return this;
+    }
+
+    public LunarCalendarHandler setHighlightIslamicEvents(boolean highlightIslamicEvents) {
+        mHighlightIslamicEvents = highlightIslamicEvents;
+        return this;
+    }
+
+    public LunarCalendarHandler setHighlightAncientEvents(boolean highlightAncientEvents) {
+        mHighlightAncientEvents = highlightAncientEvents;
+        return this;
+    }
+
+    public LunarCalendarHandler setHighlightGregorianEvents(boolean highlightGregorianEvents) {
+        mHighlightGregorianEvents = highlightGregorianEvents;
+        return this;
+    }
+
+    public LunarCalendarHandler setHighlightAdEvents(boolean highlightAdEvents) {
+        mHighlightAdEvents = highlightAdEvents;
         return this;
     }
 
@@ -367,13 +427,46 @@ public class LunarCalendarHandler {
                     day.setHoliday(true);
                 }
 
-                if (mHighlightLocalEvents)
+                if (mHighlightLocalEvents) {
                     if (getLocalEventsForDay(islamicDate).size() > 0) {
                         day.setLocalEvent(true);
                     }
-                if (mHighlightOfficialEvents)
-                    if (getOfficialEventsForDay(islamicDate).size() > 0)
-                        day.setEvent(true);
+                }
+                if (mHighlightOfficialEvents) {
+                    boolean hasEvent = false;
+                    List<CalendarEvent> events = getOfficialEventsForDay(islamicDate);
+                    for (CalendarEvent event: events) {
+                        if (event.getType().equals("Afghanistan") && mHighlightAfghanistanEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Iran") && mHighlightIranEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Ancient Iran") && mHighlightAncientEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Islamic Iran") && mHighlightIslamicEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Islamic Afghanistan") && mHighlightIslamicEvents && mHighlightAfghanistanEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Gregorian") && mHighlightGregorianEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Ad") && mHighlightAdEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                    }
+                    day.setEvent(hasEvent);
+                }
 
                 day.setIslamicDate(islamicDate.clone());
 

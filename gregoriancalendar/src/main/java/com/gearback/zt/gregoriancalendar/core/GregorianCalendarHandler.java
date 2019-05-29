@@ -68,6 +68,12 @@ public class GregorianCalendarHandler {
 
     private boolean mHighlightLocalEvents = true;
     private boolean mHighlightOfficialEvents = true;
+    private boolean mHighlightAfghanistanEvents = true;
+    private boolean mHighlightIranEvents = true;
+    private boolean mHighlightAncientEvents = true;
+    private boolean mHighlightIslamicEvents = true;
+    private boolean mHighlightGregorianEvents = true;
+    private boolean mHighlightAdEvents = true;
 
     private List<CalendarEvent> mOfficialEvents;
     private List<CalendarEvent> mLocalEvents;
@@ -192,12 +198,38 @@ public class GregorianCalendarHandler {
         return getWeekDayName(civilDate) + Constants.PERSIAN_COMMA + " " + dateToString(civilDate);
     }
 
-    public boolean isHighlightingLocalEvents() {
-        return mHighlightLocalEvents;
-    }
-
     public GregorianCalendarHandler setHighlightLocalEvents(boolean highlightLocalEvents) {
         mHighlightLocalEvents = highlightLocalEvents;
+        return this;
+    }
+
+    public GregorianCalendarHandler setHighlightAfghanistanEvents(boolean highlightAfghanistanEvents) {
+        mHighlightAfghanistanEvents = highlightAfghanistanEvents;
+        return this;
+    }
+
+    public GregorianCalendarHandler setHighlightIranEvents(boolean highlightIranEvents) {
+        mHighlightIranEvents = highlightIranEvents;
+        return this;
+    }
+
+    public GregorianCalendarHandler setHighlightIslamicEvents(boolean highlightIslamicEvents) {
+        mHighlightIslamicEvents = highlightIslamicEvents;
+        return this;
+    }
+
+    public GregorianCalendarHandler setHighlightAncientEvents(boolean highlightAncientEvents) {
+        mHighlightAncientEvents = highlightAncientEvents;
+        return this;
+    }
+
+    public GregorianCalendarHandler setHighlightGregorianEvents(boolean highlightGregorianEvents) {
+        mHighlightGregorianEvents = highlightGregorianEvents;
+        return this;
+    }
+
+    public GregorianCalendarHandler setHighlightAdEvents(boolean highlightAdEvents) {
+        mHighlightAdEvents = highlightAdEvents;
         return this;
     }
 
@@ -364,13 +396,46 @@ public class GregorianCalendarHandler {
                     day.setHoliday(true);
                 }
 
-                if (mHighlightLocalEvents)
+                if (mHighlightLocalEvents) {
                     if (getLocalEventsForDay(civilDate).size() > 0) {
                         day.setLocalEvent(true);
                     }
-                if (mHighlightOfficialEvents)
-                    if (getOfficialEventsForDay(civilDate).size() > 0)
-                        day.setEvent(true);
+                }
+                if (mHighlightOfficialEvents) {
+                    boolean hasEvent = false;
+                    List<CalendarEvent> events = getOfficialEventsForDay(civilDate);
+                    for (CalendarEvent event: events) {
+                        if (event.getType().equals("Afghanistan") && mHighlightAfghanistanEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Iran") && mHighlightIranEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Ancient Iran") && mHighlightAncientEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Islamic Iran") && mHighlightIslamicEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Islamic Afghanistan") && mHighlightIslamicEvents && mHighlightAfghanistanEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Gregorian") && mHighlightGregorianEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                        else if (event.getType().equals("Ad") && mHighlightAdEvents) {
+                            hasEvent = true;
+                            break;
+                        }
+                    }
+                    day.setEvent(hasEvent);
+                }
 
                 day.setCivilDate(civilDate.clone());
 
