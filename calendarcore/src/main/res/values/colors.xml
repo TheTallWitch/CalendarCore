@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="selectDay">@color/white</color>
+    <color name="currentDay">@color/white</color>
+</resources>
