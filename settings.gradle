@@ -1,1 +1,1 @@
-include ':app', ':persiancalendar', ':lunarcalendar', ':calendarcore', ':gregoriancalendar'
+include ':app', ':calendarcore'
